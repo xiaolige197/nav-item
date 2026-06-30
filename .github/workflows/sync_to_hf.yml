@@ -1,0 +1,21 @@
+name: Sync to Hugging Face Spaces
+
+on:
+  push:
+    branches: [ main ] # 当 main 分支有代码推送时触发
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          lfs: true # 如果有大文件，开启 LFS
+
+      - name: Push to HF
+        env:
+          HF_TOKEN: ${{ secrets.HF_TOKEN }}
+        # 将下面的 username 和 space-name 替换为您在 HF 上的用户名和 Space 名字
+        run: git push --force https://你的HF用户名:$HF_TOKEN@huggingface.co/spaces/你的HF用户名/你的Space名字 main
